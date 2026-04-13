@@ -159,5 +159,33 @@ namespace CybersecurityBot
 
             Console.WriteLine();
         }
+
+        public static void ShowMenu()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.WriteLine("\nChoose a topic:");
+            Console.WriteLine("1. Password Safety");
+            Console.WriteLine("2. Phishing");
+            Console.WriteLine("3. Safe Browsing");
+            Console.WriteLine("4. What can I ask?");
+            Console.WriteLine("5. Type your own question");
+            Console.WriteLine("6. Exit");
+
+            Console.WriteLine("\nTip: You can type things like 'how to avoid hackers'");
+        }
+    }
+
+    class ChatBot
+    {
+        private IResponder responder;
+        private User user;
+
+        public ChatBot(IResponder responder)
+        {
+            this.responder = responder;
+            user = new User();
+        }
+
     }
 }
