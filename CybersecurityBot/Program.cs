@@ -84,5 +84,44 @@ namespace CybersecurityBot
                 Console.WriteLine("Audio file not found.");
             }
         }
+
+        public static void ShowAsciiAnimated()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+
+            string[] frames =
+            {
+@"
+         CYBER BOT 
+
+         .-""""-.
+        / -   -  \
+       |  o   o  |
+       |    ^    |
+        \  ---  /
+         '-___-'
+",
+@"
+         CYBER BOT 
+
+         .-""""-.
+        / -   -  \
+       |  -   -  |
+       |    ^    |
+        \  ---  /
+         '-___-'
+"
+            };
+
+            for (int i = 0; i < 4; i++)
+            {
+                Console.Clear();
+                Console.BackgroundColor = ConsoleColor.Blue; 
+                Console.ForegroundColor = ConsoleColor.Cyan;
+
+                Console.WriteLine(frames[i % 2]);
+                Thread.Sleep(400);
+            }
+        }
     }
 }
