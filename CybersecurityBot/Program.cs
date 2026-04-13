@@ -123,5 +123,41 @@ namespace CybersecurityBot
                 Thread.Sleep(400);
             }
         }
+
+        public static void ShowHeader()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+
+            Console.WriteLine(@"
+====================================================
+      CYBERSECURITY AWARENESS CHATBOT
+====================================================
+         Stay Safe | Stay Smart 
+====================================================
+");
+        }
+
+        public static void TypeEffect(string text)
+        {
+            foreach (char c in text)
+            {
+                Console.Write(c);
+                Thread.Sleep(20);
+            }
+            Console.WriteLine();
+        }
+
+        public static void ShowLoading()
+        {
+            Console.Write("Bot is thinking");
+
+            for (int i = 0; i < 3; i++)
+            {
+                Thread.Sleep(400);
+                Console.Write(".");
+            }
+
+            Console.WriteLine();
+        }
     }
 }
