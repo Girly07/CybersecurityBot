@@ -1,17 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Media; // for audio greeting
+using System.Threading;
 
 namespace CybersecurityBot
 {
-    internal class Program
+    interface IResponder
     {
-        static void Main(string[] args)
+        string GetResponse(string userInput);
+    }
+
+    abstract class BaseResponder : IResponder
+    {
+        public abstract string GetResponse(string userInput);
+
+        protected string NormalizeInput(string input)
         {
-            //chatbot
-            Console.WriteLine("Hello! I am a cybersecurity bot. How can I assist you today?");
+            if (input == null)
+                return "";
+
+            return input.Trim().ToLower();
         }
     }
 }
