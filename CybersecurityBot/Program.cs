@@ -59,4 +59,30 @@ namespace CybersecurityBot
                 return "Try asking about passwords, phishing, or safe browsing.";
         }
     }
+
+    class User
+    {
+        public string Name { get; set; }
+
+        public bool IsValidName()
+        {
+            return !string.IsNullOrWhiteSpace(Name);
+        }
+    }
+
+    static class Utils
+    {
+        public static void PlayGreeting()
+        {
+            try
+            {
+                SoundPlayer player = new SoundPlayer("greeting.wav");
+                player.PlaySync();
+            }
+            catch
+            {
+                Console.WriteLine("Audio file not found.");
+            }
+        }
+    }
 }
