@@ -21,4 +21,42 @@ namespace CybersecurityBot
             return input.Trim().ToLower();
         }
     }
+
+    class CyberSecurityResponder : BaseResponder
+    {
+        public override string GetResponse(string userInput)
+        {
+            string input = NormalizeInput(userInput);
+
+            if (string.IsNullOrWhiteSpace(input))
+                return "You entered nothing. Please type something.";
+
+            if (input.Contains("how are you"))
+                return "I'm doing great! I'm here to help you stay safe online and protect your personal information.";
+
+            else if (input.Contains("purpose"))
+                return "My purpose is to educate you about cybersecurity risks like hacking, phishing, and unsafe browsing habits.";
+
+            else if (input.Contains("what can i ask"))
+                return "You can ask about:\n- Password safety\n- Phishing scams\n- Safe browsing\n- Online privacy\n- Hackers and viruses";
+
+            else if (input.Contains("password"))
+                return "PASSWORD SAFETY:\n\n  Use 8–12 characters\n✔ Mix uppercase, lowercase, numbers, symbols\n Avoid names/birthdays\n Do NOT share passwords\n Use different passwords\n Change passwords regularly";
+
+            else if (input.Contains("phishing"))
+                return "PHISHING:\n\nPhishing is when scammers trick you.\n\n Signs:\n- Fake emails\n- Urgent messages\n- Suspicious links\n\n Verify sender\n Don't click unknown links\n Never share passwords";
+
+            else if (input.Contains("safe browsing") || input.Contains("browse"))
+                return "SAFE BROWSING:\n\n Check URLs (https://)\n Avoid downloads\n Ignore pop-ups\n Use antivirus";
+
+            else if (input.Contains("hack"))
+                return "Hackers try to access your accounts. Use strong passwords and never share info.";
+
+            else if (input.Contains("virus"))
+                return "Viruses can damage your device. Avoid unknown downloads and use antivirus.";
+
+            else
+                return "Try asking about passwords, phishing, or safe browsing.";
+        }
+    }
 }
