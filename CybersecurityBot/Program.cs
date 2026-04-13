@@ -10,6 +10,8 @@ namespace CybersecurityBot
     {
         static void Main(string[] args)
         {
+            //chatbot
+            Console.WriteLine("Hello! I am a cybersecurity bot. How can I assist you today?");
         }
     }
 }
