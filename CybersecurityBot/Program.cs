@@ -1,18 +1,22 @@
 ﻿using System;
-using System.Media; // ✅ for your voice files
-using System.Threading;
+using System.Media; // Used to play .wav audio files
+using System.Threading; // Used for delays (animation & typing effect)
 
 namespace CybersecurityBot
 {
+    // Interface that defines chatbot response behavior
     interface IResponder
     {
         string GetResponse(string userInput);
     }
 
+    // Base class that provides shared functionality
     abstract class BaseResponder : IResponder
     {
+        // Abstract method to be implemented by child classes
         public abstract string GetResponse(string userInput);
 
+        // Normalizes user input (removes spaces & converts to lowercase)
         protected string NormalizeInput(string input)
         {
             if (input == null)
@@ -22,15 +26,18 @@ namespace CybersecurityBot
         }
     }
 
+    // Main chatbot logic class (handles cybersecurity responses)
     class CyberSecurityResponder : BaseResponder
     {
         public override string GetResponse(string userInput)
         {
             string input = NormalizeInput(userInput);
 
+            // Handle empty input
             if (string.IsNullOrWhiteSpace(input))
                 return "You entered nothing. Please type something.";
 
+            // Respond to different cybersecurity-related keywords
             if (input.Contains("how are you"))
                 return "I'm doing great! I'm here to help you stay safe online.";
 
@@ -55,37 +62,43 @@ namespace CybersecurityBot
             else if (input.Contains("virus"))
                 return "Viruses harm devices. Avoid unknown files and use antivirus.";
 
+            // Default response if no keyword is matched
             else
                 return "Try asking about passwords, phishing, or safe browsing.";
         }
     }
 
+    // Represents the user interacting with the chatbot
     class User
     {
         public string Name { get; set; }
 
+        // Validates that the user entered a name
         public bool IsValidName()
         {
             return !string.IsNullOrWhiteSpace(Name);
         }
     }
 
+    // Utility class for reusable helper methods
     static class Utils
     {
-        // 🎤 PLAY YOUR OWN VOICE FILE
+        // Plays a .wav voice file
         public static void PlayVoice(string file)
         {
             try
             {
                 SoundPlayer player = new SoundPlayer(file);
-                player.PlaySync();
+                player.PlaySync(); // Plays audio synchronously (waits until finished)
             }
             catch
             {
+                // Error handling if file is missing
                 Console.WriteLine("Voice file not found: " + file);
             }
         }
 
+        // Displays animated ASCII chatbot
         public static void ShowAsciiAnimated()
         {
             string[] frames =
@@ -112,6 +125,7 @@ namespace CybersecurityBot
 "
             };
 
+            // Loop through frames to create animation effect
             for (int i = 0; i < 4; i++)
             {
                 Console.BackgroundColor = ConsoleColor.Blue;
@@ -120,10 +134,11 @@ namespace CybersecurityBot
                 Console.Clear();
                 Console.WriteLine(frames[i % 2]);
 
-                Thread.Sleep(400);
+                Thread.Sleep(400); // Pause for animation timing
             }
         }
 
+        // Displays application header
         public static void ShowHeader()
         {
             Console.BackgroundColor = ConsoleColor.Blue;
@@ -136,6 +151,7 @@ namespace CybersecurityBot
 ");
         }
 
+        // Simulates typing effect for chatbot responses
         public static void TypeEffect(string text)
         {
             Console.ForegroundColor = ConsoleColor.White;
@@ -143,11 +159,12 @@ namespace CybersecurityBot
             foreach (char c in text)
             {
                 Console.Write(c);
-                Thread.Sleep(20);
+                Thread.Sleep(20); // Delay between each character
             }
             Console.WriteLine();
         }
 
+        // Displays "thinking" loading animation
         public static void ShowLoading()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -161,6 +178,7 @@ namespace CybersecurityBot
             Console.WriteLine();
         }
 
+        // Displays menu options for the user
         public static void ShowMenu()
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -174,10 +192,11 @@ namespace CybersecurityBot
         }
     }
 
+    // Main chatbot controller class
     class ChatBot
     {
-        private IResponder responder;
-        private User user;
+        private IResponder responder; // Handles responses
+        private User user; // Stores user info
 
         public ChatBot(IResponder responder)
         {
@@ -185,30 +204,34 @@ namespace CybersecurityBot
             user = new User();
         }
 
+        // Starts the chatbot application
         public void Start()
         {
             Console.BackgroundColor = ConsoleColor.Blue;
             Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
 
-            Utils.ShowAsciiAnimated();
-            Utils.ShowHeader();
+            Utils.ShowAsciiAnimated(); // Show animated bot
+            Utils.ShowHeader(); // Show title
 
-            // 🎤 YOUR VOICE GREETING
-            Utils.PlayVoice("greeting.wav");
+            Utils.PlayVoice("greeting.wav"); // Play greeting audio
 
+            // Ask user for their name
             Console.Write("Enter your name: ");
             user.Name = Console.ReadLine();
 
+            // Default to "Guest" if name is empty
             if (!user.IsValidName())
                 user.Name = "Guest";
 
+            // Welcome message
             string welcome = "Welcome " + user.Name;
             Utils.TypeEffect(welcome);
 
-            RunChat();
+            RunChat(); // Start interaction loop
         }
 
+        // Handles the main chatbot loop
         private void RunChat()
         {
             while (true)
@@ -220,6 +243,7 @@ namespace CybersecurityBot
 
                 string input = "";
 
+                // Menu selection handling
                 switch (choice)
                 {
                     case "1": input = "password"; break;
@@ -229,11 +253,11 @@ namespace CybersecurityBot
 
                     case "5":
                         Console.Write("Ask: ");
-                        input = Console.ReadLine();
+                        input = Console.ReadLine(); // User custom question
                         break;
 
                     case "6":
-                        Utils.PlayVoice("goodbye.wav"); // 🎤 YOUR VOICE
+                        Utils.PlayVoice("goodbye.wav"); // Play exit audio
                         Console.WriteLine("Goodbye!");
                         return;
 
@@ -242,19 +266,23 @@ namespace CybersecurityBot
                         continue;
                 }
 
-                Utils.ShowLoading();
+                Utils.ShowLoading(); // Show thinking animation
 
+                // Get chatbot response
                 string response = responder.GetResponse(input);
 
+                // Display response with typing effect
                 Utils.TypeEffect("Bot: " + response);
             }
         }
     }
 
+    // Program entry point
     class Program
     {
         static void Main(string[] args)
         {
+            // Create chatbot instance and start it
             ChatBot bot = new ChatBot(new CyberSecurityResponder());
             bot.Start();
         }
