@@ -277,7 +277,7 @@ namespace CybersecurityBot
         }
     }
 
-    // Program entry point
+    // Main program(entry point)
     class Program
     {
         static void Main(string[] args)
