@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Media; // for audio greeting
+using System.Media; // ✅ for your voice files
 using System.Threading;
 
 namespace CybersecurityBot
@@ -32,28 +32,28 @@ namespace CybersecurityBot
                 return "You entered nothing. Please type something.";
 
             if (input.Contains("how are you"))
-                return "I'm doing great! I'm here to help you stay safe online and protect your personal information.";
+                return "I'm doing great! I'm here to help you stay safe online.";
 
             else if (input.Contains("purpose"))
-                return "My purpose is to educate you about cybersecurity risks like hacking, phishing, and unsafe browsing habits.";
+                return "My purpose is to educate you about cybersecurity risks.";
 
             else if (input.Contains("what can i ask"))
-                return "You can ask about:\n- Password safety\n- Phishing scams\n- Safe browsing\n- Online privacy\n- Hackers and viruses";
+                return "You can ask about passwords, phishing, safe browsing, privacy and hackers.";
 
             else if (input.Contains("password"))
-                return "PASSWORD SAFETY:\n\n  Use 8–12 characters\n✔ Mix uppercase, lowercase, numbers, symbols\n Avoid names/birthdays\n Do NOT share passwords\n Use different passwords\n Change passwords regularly";
+                return "Use strong passwords with letters, numbers, and symbols. Never share them.";
 
             else if (input.Contains("phishing"))
-                return "PHISHING:\n\nPhishing is when scammers trick you.\n\n Signs:\n- Fake emails\n- Urgent messages\n- Suspicious links\n\n Verify sender\n Don't click unknown links\n Never share passwords";
+                return "Phishing is when scammers trick you. Never click suspicious links.";
 
             else if (input.Contains("safe browsing") || input.Contains("browse"))
-                return "SAFE BROWSING:\n\n Check URLs (https://)\n Avoid downloads\n Ignore pop-ups\n Use antivirus";
+                return "Always check websites and avoid unsafe downloads.";
 
             else if (input.Contains("hack"))
-                return "Hackers try to access your accounts. Use strong passwords and never share info.";
+                return "Hackers try to access accounts. Keep your info private.";
 
             else if (input.Contains("virus"))
-                return "Viruses can damage your device. Avoid unknown downloads and use antivirus.";
+                return "Viruses harm devices. Avoid unknown files and use antivirus.";
 
             else
                 return "Try asking about passwords, phishing, or safe browsing.";
@@ -72,23 +72,22 @@ namespace CybersecurityBot
 
     static class Utils
     {
-        public static void PlayGreeting()
+        // 🎤 PLAY YOUR OWN VOICE FILE
+        public static void PlayVoice(string file)
         {
             try
             {
-                SoundPlayer player = new SoundPlayer("greeting.wav");
+                SoundPlayer player = new SoundPlayer(file);
                 player.PlaySync();
             }
             catch
             {
-                Console.WriteLine("Audio file not found.");
+                Console.WriteLine("Voice file not found: " + file);
             }
         }
 
         public static void ShowAsciiAnimated()
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-
             string[] frames =
             {
 @"
@@ -115,30 +114,32 @@ namespace CybersecurityBot
 
             for (int i = 0; i < 4; i++)
             {
-                Console.Clear();
-                Console.BackgroundColor = ConsoleColor.Blue; 
+                Console.BackgroundColor = ConsoleColor.Blue;
                 Console.ForegroundColor = ConsoleColor.Cyan;
 
+                Console.Clear();
                 Console.WriteLine(frames[i % 2]);
+
                 Thread.Sleep(400);
             }
         }
 
         public static void ShowHeader()
         {
+            Console.BackgroundColor = ConsoleColor.Blue;
             Console.ForegroundColor = ConsoleColor.Cyan;
 
             Console.WriteLine(@"
-====================================================
-      CYBERSECURITY AWARENESS CHATBOT
-====================================================
-         Stay Safe | Stay Smart 
-====================================================
+========================================
+   CYBERSECURITY AWARENESS CHATBOT
+========================================
 ");
         }
 
         public static void TypeEffect(string text)
         {
+            Console.ForegroundColor = ConsoleColor.White;
+
             foreach (char c in text)
             {
                 Console.Write(c);
@@ -149,30 +150,27 @@ namespace CybersecurityBot
 
         public static void ShowLoading()
         {
-            Console.Write("Bot is thinking");
+            Console.ForegroundColor = ConsoleColor.Yellow;
 
+            Console.Write("Bot is thinking");
             for (int i = 0; i < 3; i++)
             {
                 Thread.Sleep(400);
                 Console.Write(".");
             }
-
             Console.WriteLine();
         }
 
         public static void ShowMenu()
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.Green;
 
-            Console.WriteLine("\nChoose a topic:");
-            Console.WriteLine("1. Password Safety");
+            Console.WriteLine("\n1. Password Safety");
             Console.WriteLine("2. Phishing");
             Console.WriteLine("3. Safe Browsing");
             Console.WriteLine("4. What can I ask?");
-            Console.WriteLine("5. Type your own question");
+            Console.WriteLine("5. Ask your own question");
             Console.WriteLine("6. Exit");
-
-            Console.WriteLine("\nTip: You can type things like 'how to avoid hackers'");
         }
     }
 
@@ -189,23 +187,25 @@ namespace CybersecurityBot
 
         public void Start()
         {
-            Console.BackgroundColor = ConsoleColor.Blue; //
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
 
-            Utils.PlayGreeting();
             Utils.ShowAsciiAnimated();
             Utils.ShowHeader();
+
+            // 🎤 YOUR VOICE GREETING
+            Utils.PlayVoice("greeting.wav");
 
             Console.Write("Enter your name: ");
             user.Name = Console.ReadLine();
 
             if (!user.IsValidName())
-            {
-                Console.WriteLine("Invalid name. Defaulting to Guest.");
                 user.Name = "Guest";
-            }
 
-            Utils.TypeEffect("Welcome, " + user.Name + "!");
+            string welcome = "Welcome " + user.Name;
+            Utils.TypeEffect(welcome);
+
             RunChat();
         }
 
@@ -215,42 +215,26 @@ namespace CybersecurityBot
             {
                 Utils.ShowMenu();
 
-                Console.Write("\nEnter choice: ");
+                Console.Write("\nChoice: ");
                 string choice = Console.ReadLine();
 
                 string input = "";
 
                 switch (choice)
                 {
-                    case "1":
-                        input = "password";
-                        break;
-
-                    case "2":
-                        input = "phishing";
-                        break;
-
-                    case "3":
-                        input = "safe browsing";
-                        break;
-
-                    case "4":
-                        input = "what can i ask";
-                        break;
+                    case "1": input = "password"; break;
+                    case "2": input = "phishing"; break;
+                    case "3": input = "safe browsing"; break;
+                    case "4": input = "what can i ask"; break;
 
                     case "5":
-                        Console.Write("Type your question: ");
+                        Console.Write("Ask: ");
                         input = Console.ReadLine();
-
-                        if (string.IsNullOrWhiteSpace(input))
-                        {
-                            Console.WriteLine("Please type something valid.");
-                            continue;
-                        }
                         break;
 
                     case "6":
-                        Console.WriteLine("Goodbye! Stay safe online.");
+                        Utils.PlayVoice("goodbye.wav"); // 🎤 YOUR VOICE
+                        Console.WriteLine("Goodbye!");
                         return;
 
                     default:
@@ -258,16 +242,11 @@ namespace CybersecurityBot
                         continue;
                 }
 
-                try
-                {
-                    Utils.ShowLoading();
-                    string response = responder.GetResponse(input);
-                    Utils.TypeEffect("Bot: " + response);
-                }
-                catch
-                {
-                    Console.WriteLine("Something went wrong.");
-                }
+                Utils.ShowLoading();
+
+                string response = responder.GetResponse(input);
+
+                Utils.TypeEffect("Bot: " + response);
             }
         }
     }
@@ -276,9 +255,6 @@ namespace CybersecurityBot
     {
         static void Main(string[] args)
         {
-            Console.BackgroundColor = ConsoleColor.Blue;
-            Console.Clear();
-
             ChatBot bot = new ChatBot(new CyberSecurityResponder());
             bot.Start();
         }
