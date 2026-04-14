@@ -187,5 +187,100 @@ namespace CybersecurityBot
             user = new User();
         }
 
+        public void Start()
+        {
+            Console.BackgroundColor = ConsoleColor.Blue; //
+            Console.Clear();
+
+            Utils.PlayGreeting();
+            Utils.ShowAsciiAnimated();
+            Utils.ShowHeader();
+
+            Console.Write("Enter your name: ");
+            user.Name = Console.ReadLine();
+
+            if (!user.IsValidName())
+            {
+                Console.WriteLine("Invalid name. Defaulting to Guest.");
+                user.Name = "Guest";
+            }
+
+            Utils.TypeEffect("Welcome, " + user.Name + "!");
+            RunChat();
+        }
+
+        private void RunChat()
+        {
+            while (true)
+            {
+                Utils.ShowMenu();
+
+                Console.Write("\nEnter choice: ");
+                string choice = Console.ReadLine();
+
+                string input = "";
+
+                switch (choice)
+                {
+                    case "1":
+                        input = "password";
+                        break;
+
+                    case "2":
+                        input = "phishing";
+                        break;
+
+                    case "3":
+                        input = "safe browsing";
+                        break;
+
+                    case "4":
+                        input = "what can i ask";
+                        break;
+
+                    case "5":
+                        Console.Write("Type your question: ");
+                        input = Console.ReadLine();
+
+                        if (string.IsNullOrWhiteSpace(input))
+                        {
+                            Console.WriteLine("Please type something valid.");
+                            continue;
+                        }
+                        break;
+
+                    case "6":
+                        Console.WriteLine("Goodbye! Stay safe online.");
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid option.");
+                        continue;
+                }
+
+                try
+                {
+                    Utils.ShowLoading();
+                    string response = responder.GetResponse(input);
+                    Utils.TypeEffect("Bot: " + response);
+                }
+                catch
+                {
+                    Console.WriteLine("Something went wrong.");
+                }
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.Clear();
+
+            ChatBot bot = new ChatBot(new CyberSecurityResponder());
+            bot.Start();
+        }
     }
 }
